@@ -1,0 +1,105 @@
+Pergjigjet Komponente Elektronike:
+
+1. Every known element has:
+c) unique type of atoms
+2. The nucleus of an atoms consists of
+a) protons and neutrons
+3. The difference between an insulator and a semiconductor is:
+a) a wider energy gap between the valence and  conduction bands
+4.The majority carriers is an n-type semiconductor are:
+ c) conduction electrons
+5. The process of adding impurtities to a pure semiconductor is called
+b) doping
+6.	A diode conducts current when
+ a) forward biased
+7. The output frequency of a full-wave rectifier is
+b) twice the input frequency
+8.The purpose of a capacitor filter in a rectifier is to:
+ b) limit the voltage spikes
+9.A Zener diode is used for:
+ b) voltage regulation
+10.A bridge rectifier differs from a half-wave rectifier because:
+ a) rectifies both halves of the AC cycle
+11.The LED is based on:
+ c) electroluminescene
+12. A photodiode operates in:
+b) reverse bias 
+
+13.  A Schottky diode is primarily used for:
+a) low forward voltage drop 
+14. The light output of an LED increases when:
+a) forward current increases
+15. A varactor diode is used as:
+ c) a variable capacitor
+16. 	The three terminals of a BJT are:
+b) base emitter collector
+17. A transistor in cutoff acts as:
+ a) an open switch
+18. The base current of a BJT is:
+a) smaller than the collector current
+19. The DC Current gain(beta) of a transistor is defined as:
+c) the ratio of collector current to base current
+20. In a pnp transistor,the p regions are:
+ a) base and emitter
+21. The most commonly used biasing technique in BJTs is:
+a) voltage-divider bias
+22. Base biasing is considered unstable because
+a) it depends on Beta
+23. If the base resistor opens in a voltage-divider biased transistor,the transistor:
+a) goes into cutoff
+24.Collector-feedback bias provides stability because:
+ b) it is independent Beta
+25.Thermal runaway occurs in BJTs when:
+ b) the transistor overheats and draws more current
+26. A small-signal amplifier:
+ a) uses only a small portion of its load line
+27. The voltage gain of a common-emitter amplifier is  given by:
+a) Av= Rc/rc
+28.The function of a bypass capacitor in a CE amplifier is to:
+ d) increase voltage gain
+29.	A common-collector amplifier is also called:
+•	(b) An emitter follower
+30.	A Darlington pair consists of:
+•	(c) Two CE amplifiers
+31.	The overall gain of a multistage amplifier is:
+•	(b) The product of individual gains
+32.	A Class A amplifier:
+•	(b) Operates in the linear region at all times
+33.	The maximum efficiency of a Class A amplifier is:
+•	(a) 25%
+34.	The main advantage of Class AB operation is:
+•	(a) It eliminates crossover distortion
+35.	A Class C amplifier operates:
+•	(b) For less than half the input cycle
+36.	A push-pull amplifier:
+•	(b) Uses two transistors that conduct alternately
+37.	A Class D amplifier uses:
+•	(a) Pulse-width modulation
+38.	The primary purpose of heat sinks in power amplifiers is:
+•	(c) To dissipate excess heat
+39.	A JFET is a:
+•	(b) Unipolar device
+
+40.	The pinch-off voltage (Vp) of a JFET is:
+•	(a) The voltage at which ID becomes zero
+41.	The main difference between a MOSFET and a JFET is:
+•	(b) The MOSFET has no gate current
+42.	The two modes of a D-MOSFET are:
+•	(a) Enhancement and depletion
+43.	The E-MOSFET differs from the D-MOSFET because:
+•	(a) It has an induced channel
+44.	MOSFETs must be handled carefully because:
+•	(a) They are sensitive to overvoltage
+45.	In a self-biased JFET circuit, the gate is:
+•	(c) At a negative voltage
+46.	A common-source (CS) amplifier:
+•	(b) Has high input resistance
+47.	A cascade amplifier consists of:
+•	(a) A common-source and common-gate amplifier
+48.	MOSFETs are commonly used for switching because:
+•	(c) They have a high input impedance
+49.	In a MOSFET switching circuit, the gate voltage:
+•	(a) Controls the resistance between drain and source
+50.	CMOS circuits use:
+•	(b) Two MOSFETs, one p-type and one n-type
+
