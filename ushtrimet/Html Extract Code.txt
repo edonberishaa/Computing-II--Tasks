@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace ExamExercisesOne
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string inputPath = "C:\\Users\\Lenovo\\Desktop\\.NET\\ExamExercisesOne\\Problem1.html";
+            string outputPath = "C:\\Users\\Lenovo\\Desktop\\.NET\\ExamExercisesOne\\Problem1.txt";
+
+            using (StreamReader reader = new StreamReader(inputPath))
+            using (StreamWriter writer = new StreamWriter(outputPath))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    line = RemoveAllTags(line).Trim();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+        }
+       private static string RemoveAllTags(string str)
+        {
+            return Regex.Replace(str, "<[^>]*>", string.Empty);
+        }
+    }
+}
+
+
+

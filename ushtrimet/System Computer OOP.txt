@@ -1,0 +1,146 @@
+using System;
+using System.Collections.Generic;
+
+namespace FileSystemModel
+{
+    // Base File class
+    public abstract class File
+    {
+        public string Name { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime LastChangeDate { get; set; }
+
+        public File(string name)
+        {
+            Name = name;
+            CreationDate = DateTime.Now;
+            LastChangeDate = DateTime.Now;
+        }
+
+        // Abstract method for displaying file content
+        public abstract void DisplayContent();
+    }
+
+    // TextFile class
+    public class TextFile : File
+    {
+        public string Content { get; set; }
+
+        public TextFile(string name, string content) : base(name)
+        {
+            Content = content;
+        }
+
+        public override void DisplayContent()
+        {
+            Console.WriteLine($"Text File Content: {Content}");
+        }
+    }
+
+    // BinaryFile class
+    public class BinaryFile : File
+    {
+        public byte[] Content { get; set; }
+
+        public BinaryFile(string name, byte[] content) : base(name)
+        {
+            Content = content;
+        }
+
+        public override void DisplayContent()
+        {
+            Console.WriteLine($"Binary File Content: {BitConverter.ToString(Content)}");
+        }
+    }
+
+    // Directory class
+    public class Directory
+    {
+        public string Name { get; set; }
+        public DateTime LastChangeDate { get; set; }
+        public List<Directory> SubDirectories { get; set; }
+        public List<File> Files { get; set; }
+
+        public Directory(string name)
+        {
+            Name = name;
+            LastChangeDate = DateTime.Now;
+            SubDirectories = new List<Directory>();
+            Files = new List<File>();
+        }
+
+        public void AddFile(File file)
+        {
+            Files.Add(file);
+            LastChangeDate = DateTime.Now;
+        }
+
+        public void AddDirectory(Directory directory)
+        {
+            SubDirectories.Add(directory);
+            LastChangeDate = DateTime.Now;
+        }
+
+        public void ListContents()
+        {
+            Console.WriteLine($"Directory: {Name}, Last Changed: {LastChangeDate}");
+            Console.WriteLine("Files:");
+            foreach (var file in Files)
+            {
+                Console.WriteLine($"- {file.Name} (Created: {file.CreationDate}, Last Modified: {file.LastChangeDate})");
+                file.DisplayContent();
+            }
+            Console.WriteLine("Subdirectories:");
+            foreach (var subDir in SubDirectories)
+            {
+                Console.WriteLine($"- {subDir.Name}");
+            }
+        }
+    }
+
+    // Device class
+    public class Device
+    {
+        public string Name { get; set; }
+        public Directory RootDirectory { get; set; }
+
+        public Device(string name)
+        {
+            Name = name;
+            RootDirectory = new Directory("Root");
+        }
+
+        public void ListFilesAndDirectories()
+        {
+            Console.WriteLine($"Device: {Name}");
+            RootDirectory.ListContents();
+        }
+    }
+
+    // Testing the model with a simple example
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create files
+            var textFile = new TextFile("Readme.txt", "This is a text file with some content.");
+            var binaryFile = new BinaryFile("image.jpg", new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 });
+
+            // Create directories
+            var dir1 = new Directory("Documents");
+            var dir2 = new Directory("Pictures");
+
+            // Add files to directories
+            dir1.AddFile(textFile);
+            dir2.AddFile(binaryFile);
+
+            // Create a device (e.g., a Hard Drive)
+            var hdd = new Device("Hard Drive");
+            hdd.RootDirectory.AddDirectory(dir1);
+            hdd.RootDirectory.AddDirectory(dir2);
+
+            // List files and directories in the device
+            hdd.ListFilesAndDirectories();
+        }
+    }
+}

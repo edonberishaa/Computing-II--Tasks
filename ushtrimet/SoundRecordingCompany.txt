@@ -1,0 +1,150 @@
+using System;
+using System.Collections.Generic;
+
+namespace SoundRecordingCompany
+{
+    // Class representing a song
+    public class Song
+    {
+        public string Name { get; set; }
+        public double Duration { get; set; } // Duration in minutes
+
+        public Song(string name, double duration)
+        {
+            Name = name;
+            Duration = duration;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Duration} mins)";
+        }
+    }
+
+    // Class representing an album
+    public class Album
+    {
+        public string Name { get; set; }
+        public string Genre { get; set; }
+        public int YearOfCreation { get; set; }
+        public int SoldCopies { get; set; }
+        public List<Song> Songs { get; set; }
+
+        public Album(string name, string genre, int yearOfCreation, int soldCopies)
+        {
+            Name = name;
+            Genre = genre;
+            YearOfCreation = yearOfCreation;
+            SoldCopies = soldCopies;
+            Songs = new List<Song>();
+        }
+
+        public void AddSong(Song song)
+        {
+            Songs.Add(song);
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Genre}, {YearOfCreation}) - Sold: {SoldCopies} copies";
+        }
+    }
+
+    // Class representing a performer
+    public class Performer
+    {
+        public string Name { get; set; }
+        public string Nickname { get; set; }
+        public List<Album> Albums { get; set; }
+
+        public Performer(string name, string nickname)
+        {
+            Name = name;
+            Nickname = nickname;
+            Albums = new List<Album>();
+        }
+
+        public void AddAlbum(Album album)
+        {
+            Albums.Add(album);
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Nickname})";
+        }
+    }
+
+    // Class representing the company
+    public class Company
+    {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Owner { get; set; }
+        public List<Performer> Performers { get; set; }
+
+        public Company(string name, string address, string owner)
+        {
+            Name = name;
+            Address = address;
+            Owner = owner;
+            Performers = new List<Performer>();
+        }
+
+        public void AddPerformer(Performer performer)
+        {
+            Performers.Add(performer);
+        }
+
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"Company: {Name}\nOwner: {Owner}\nAddress: {Address}");
+            Console.WriteLine("\nPerformers:");
+            foreach (var performer in Performers)
+            {
+                Console.WriteLine(performer);
+                foreach (var album in performer.Albums)
+                {
+                    Console.WriteLine($"  - {album}");
+                    foreach (var song in album.Songs)
+                    {
+                        Console.WriteLine($"    - {song}");
+                    }
+                }
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create some songs
+            Song song1 = new Song("Song A", 3.5);
+            Song song2 = new Song("Song B", 4.2);
+            Song song3 = new Song("Song C", 3.1);
+            Song song4 = new Song("Song D", 5.0);
+
+            // Create some albums
+            Album album1 = new Album("Album 1", "Pop", 2021, 50000);
+            album1.AddSong(song1);
+            album1.AddSong(song2);
+
+            Album album2 = new Album("Album 2", "Rock", 2022, 75000);
+            album2.AddSong(song3);
+            album2.AddSong(song4);
+
+            // Create some performers
+            Performer performer1 = new Performer("John Doe", "J-Doe");
+            performer1.AddAlbum(album1);
+            performer1.AddAlbum(album2);
+
+            // Create the company and add performers
+            Company company = new Company("Amazing Sounds", "123 Music St, New York", "Alice Johnson");
+            company.AddPerformer(performer1);
+
+            // Display company info
+            company.DisplayInfo();
+        }
+    }
+}

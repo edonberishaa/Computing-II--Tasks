@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+class LabyrinthPaths
+{
+    static char[,] labyrinth;
+    static int n;
+    static int[] dRow = { -1, 1, 0, 0 }; // Up, Down, Left, Right
+    static int[] dCol = { 0, 0, -1, 1 };
+    static string[] directions = { "Up", "Down", "Left", "Right" };
+
+    public static void Main()
+    {
+        string[] input = {
+            "a # # k m #",
+            "z # a d a #",
+            "a * m # # #",
+            "# d # # # #",
+            "r i f i d #",
+            "# d # d # t"
+        };
+
+        n = input.Length;
+        labyrinth = new char[n, n];
+
+        int startX = -1, startY = -1;
+
+        // Convert input into a 2D character array and find Jack's position
+        for (int i = 0; i < n; i++)
+        {
+            string[] row = input[i].Split(' ');
+            for (int j = 0; j < n; j++)
+            {
+                labyrinth[i, j] = row[j][0];
+                if (labyrinth[i, j] == '*')
+                {
+                    startX = i;
+                    startY = j;
+                }
+            }
+        }
+
+        // Start DFS from Jack's position
+        DFS(startX, startY, new StringBuilder(), new List<string>());
+
+        Console.WriteLine("All possible paths found.");
+    }
+
+    static void DFS(int row, int col, StringBuilder currentWord, List<string> path)
+    {
+        // If out of bounds or on a wall, return
+        if (row < 0 || row >= n || col < 0 || col >= n || labyrinth[row, col] == '#')
+            return;
+
+        // Append current letter to the word
+        currentWord.Append(labyrinth[row, col]);
+
+        // Check if we reached an exit (border of the matrix)
+        if (row == 0 || row == n - 1 || col == 0 || col == n - 1)
+        {
+            Console.WriteLine($"Path: {string.Join(" -> ", path)} | Word: {currentWord}");
+        }
+
+        // Temporarily mark the cell to avoid revisiting in the same path
+        char temp = labyrinth[row, col];
+        labyrinth[row, col] = '#';
+
+        // Explore 4 possible directions
+        for (int i = 0; i < 4; i++)
+        {
+            int newRow = row + dRow[i];
+            int newCol = col + dCol[i];
+
+            path.Add(directions[i]); // Add movement direction
+            DFS(newRow, newCol, currentWord, path);
+            path.RemoveAt(path.Count - 1); // Backtrack
+        }
+
+        // Restore the cell after backtracking
+        labyrinth[row, col] = temp;
+        currentWord.Length--; // Remove last character for backtracking
+    }
+}

@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    // Function to check if a sequence is alternating
+    static bool IsAlternating(List<int> sequence)
+    {
+        for (int i = 1; i < sequence.Count; i++)
+        {
+            // If the index is odd, the current element should be greater than the previous one
+            if (i % 2 == 1 && sequence[i] >= sequence[i - 1])
+            {
+                return false;
+            }
+            // If the index is even, the current element should be less than the previous one
+            if (i % 2 == 0 && sequence[i] <= sequence[i - 1])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Function to generate all permutations of length k from the set S
+    static void GenerateAlternatingSequences(List<int> S, int k)
+    {
+        List<int> sequence = new List<int>();
+        GeneratePermutations(S, k, sequence);
+    }
+
+    // Function to generate all possible permutations recursively
+    static void GeneratePermutations(List<int> S, int k, List<int> sequence)
+    {
+        // If the sequence has the desired length k, check if it is alternating
+        if (sequence.Count == k)
+        {
+            if (IsAlternating(sequence))
+            {
+                Console.WriteLine(string.Join(", ", sequence));
+            }
+            return;
+        }
+
+        // Try adding each element of S to the sequence
+        for (int i = 0; i < S.Count; i++)
+        {
+            if (sequence.Contains(S[i])) // Skip already used elements
+                continue;
+
+            sequence.Add(S[i]);
+            GeneratePermutations(S, k, sequence); // Recurse with the new element added
+            sequence.RemoveAt(sequence.Count - 1); // Backtrack
+        }
+    }
+
+    static void Main()
+    {
+        List<int> S = new List<int> { 2, 5, 3, 4 }; // Example set
+        int k = 3; // Length of the alternating sequence
+
+        Console.WriteLine("Alternating sequences:");
+        GenerateAlternatingSequences(S, k);
+    }
+}

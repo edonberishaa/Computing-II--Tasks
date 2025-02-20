@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Path to the text file
+        string filePath = "text.txt";
+        
+        // List of phrases to search for
+        List<string> phrases = new List<string> { "s", "stu", "a", "I am" };
+        
+        // Dictionary to store the count of each phrase
+        Dictionary<string, int> phraseCounts = new Dictionary<string, int>();
+        foreach (var phrase in phrases)
+        {
+            phraseCounts[phrase] = 0;
+        }
+        
+        // Buffer to store the current sequence of characters
+        string buffer = "";
+        
+        // Read the text file character by character
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            int charCode;
+            while ((charCode = reader.Read()) != -1)
+            {
+                char c = (char)charCode;
+                buffer += c;
+                
+                // Check each phrase for a match at the end of the buffer
+                foreach (var phrase in phrases)
+                {
+                    if (buffer.EndsWith(phrase))
+                    {
+                        phraseCounts[phrase]++;
+                    }
+                }
+            }
+        }
+        
+        // Output the results
+        foreach (var phrase in phrases)
+        {
+            Console.WriteLine($"Phrase: \"{phrase}\", Count: {phraseCounts[phrase]}");
+        }
+    }
+}

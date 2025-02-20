@@ -1,0 +1,106 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string expression = "2 *(2.25 + 5.25) - 17 / 3";
+        Console.WriteLine("Expression: " + expression);
+        if (IsValidExpression(expression))
+        {
+            Console.WriteLine("The expression is valid.");
+        }
+        else
+        {
+            Console.WriteLine("The expression is not valid.");
+        }
+    }
+
+    static bool IsValidExpression(string expression)
+    {
+        expression = expression.Replace(" ", string.Empty); // Remove spaces for easier processing
+        Stack<double> stack = new Stack<double>();
+        bool lastWasOperand = false;  // Flag to track if the last processed token was an operand
+        bool lastWasOperator = true;  // Flag to track if the last processed token was an operator or parenthesis
+
+        // Handle special case for leading negative numbers (e.g., -1 or -(2+4))
+        expression = PreprocessExpression(expression);
+
+        for (int i = 0; i < expression.Length; i++)
+        {
+            char currentChar = expression[i];
+
+            // If the character is a digit, handle the number
+            if (Char.IsDigit(currentChar) || currentChar == '.')
+            {
+                string number = GetNumber(expression, ref i);
+                stack.Push(double.Parse(number));
+                lastWasOperand = true;
+                lastWasOperator = false;
+            }
+            // If the character is an operator (+, -, *, /)
+            else if ("+-*/".Contains(currentChar))
+            {
+                // Invalid if the last processed character was an operator
+                if (lastWasOperator)
+                    return false;
+
+                // Perform the operation
+                if (stack.Count >= 2)
+                {
+                    double b = stack.Pop();
+                    double a = stack.Pop();
+                    double result = currentChar switch
+                    {
+                        '+' => a + b,
+                        '-' => a - b,
+                        '*' => a * b,
+                        '/' => a / b,
+                        _ => throw new InvalidOperationException("Invalid operator.")
+                    };
+                    stack.Push(result);
+                }
+                else
+                {
+                    return false; // Not enough operands
+                }
+
+                lastWasOperand = false;
+                lastWasOperator = true;
+            }
+            // Handle parentheses: Ignore for validation but should be balanced
+            else if (currentChar == '(' || currentChar == ')')
+            {
+                return false; // Infix notation is not valid here, should only be RPN
+            }
+            else
+            {
+                // If the character is not a valid operator or operand, return false
+                return false;
+            }
+        }
+
+        // At the end, we should have exactly one result in the stack
+        return stack.Count == 1;
+    }
+
+    static string GetNumber(string expression, ref int i)
+    {
+        int start = i;
+        while (i < expression.Length && (Char.IsDigit(expression[i]) || expression[i] == '.'))
+        {
+            i++;
+        }
+        return expression.Substring(start, i - start);
+    }
+
+    // Preprocess the expression to handle cases like "-1" or "-(2+4)"
+    static string PreprocessExpression(string expression)
+    {
+        // Replace patterns like `-(number)` or `-number` with `0 - (number)`
+        expression = expression.Replace("(-", "(0-");
+        return expression;
+    }
+}

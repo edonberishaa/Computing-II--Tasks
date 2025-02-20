@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SplittingPlanePoints
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Read number of points.
+            int N = int.Parse(Console.ReadLine());
+            var points = new List<(int x, int y)>();
+
+            // Read each point.
+            for (int i = 0; i < N; i++)
+            {
+                var tokens = Console.ReadLine().Split();
+                int x = int.Parse(tokens[0]);
+                int y = int.Parse(tokens[1]);
+                points.Add((x, y));
+            }
+
+            // Process vertical lines (using x-coordinates).
+            var verticalResults = FindSplittingLines(points.Select(p => p.x).ToList(), "Vertical");
+
+            // Process horizontal lines (using y-coordinates).
+            var horizontalResults = FindSplittingLines(points.Select(p => p.y).ToList(), "Horizontal");
+
+            // Output the results.
+            Console.WriteLine("Vertical Splitting Lines:");
+            foreach (var res in verticalResults)
+                Console.WriteLine(res);
+
+            Console.WriteLine("\nHorizontal Splitting Lines:");
+            foreach (var res in horizontalResults)
+                Console.WriteLine(res);
+        }
+
+        /// <summary>
+        /// Finds all splitting lines given a list of coordinate values.
+        /// </summary>
+        /// <param name="coords">List of x or y coordinates</param>
+        /// <param name="direction">"Vertical" or "Horizontal" (for printing purposes)</param>
+        /// <returns>List of strings describing the valid splitting lines.</returns>
+        static List<string> FindSplittingLines(List<int> coords, string direction)
+        {
+            List<string> results = new List<string>();
+            int total = coords.Count;
+
+            // Build frequency map (SortedDictionary ensures keys are sorted).
+            SortedDictionary<int, int> freq = new SortedDictionary<int, int>();
+            foreach (var c in coords)
+            {
+                if (!freq.ContainsKey(c))
+                    freq[c] = 0;
+                freq[c]++;
+            }
+
+            // Get sorted unique coordinates.
+            var unique = freq.Keys.ToList();
+            int m = unique.Count;
+
+            // Build prefix sums.
+            // prefix[i] will be the total count of points with coordinate <= unique[i].
+            int[] prefix = new int[m];
+            int sum = 0;
+            for (int i = 0; i < m; i++)
+            {
+                sum += freq[unique[i]];
+                prefix[i] = sum;
+            }
+
+            // Case 1: Check intervals between unique coordinates.
+            for (int i = 0; i < m - 1; i++)
+            {
+                // Points with coordinate < any value in (unique[i], unique[i+1])
+                int leftCount = prefix[i];
+                int rightCount = total - leftCount;
+                if (leftCount == rightCount)
+                {
+                    results.Add(
+                        $"Any {direction.ToLower()} line between {unique[i]} and {unique[i + 1]} (non-inclusive)");
+                }
+            }
+
+            // Case 2: Check lines that go through a point (i.e., at a unique coordinate).
+            for (int i = 0; i < m; i++)
+            {
+                int leftCount = (i == 0) ? 0 : prefix[i - 1];
+                int rightCount = total - prefix[i];
+                if (leftCount == rightCount)
+                {
+                    results.Add($"{direction} line at { (direction == "Vertical" ? "x" : "y") } = {unique[i]}");
+                }
+            }
+
+            return results;
+        }
+    }
+}

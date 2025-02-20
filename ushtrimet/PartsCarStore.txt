@@ -1,0 +1,201 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PartsCarStore
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Shop emptyShop = new Shop("Empty Shop");
+            Console.WriteLine(emptyShop);
+
+            Manufacturer bmw = new Manufacturer("BMW","Germany", "Bavaria", "665544", "876666");
+            Manufacturer llada = new Manufacturer("Lada", "Russia", "Moscow", "32324", "12341");
+
+            Part partEngineOil = new Part("Boshpump","32341",PartCategory.Exhaust,bmw,343.1m,345.6m);
+            Part guma = new Part("Guma", "33554", PartCategory.Tires, llada, 12.1m, 17.6m);
+            guma.AddSupportedCar(new Car("Zastava", "Niva", 1990));
+
+            Car bmw316i = new Car("BMW", "316i", 1994);
+            partEngineOil.AddSupportedCar(bmw316i);
+
+            Car mazdaMX5 = new Car("Mazda", "MX5", 1999);
+            partEngineOil.AddSupportedCar(mazdaMX5);
+
+            Shop ultra = new Shop("Ultra Shop");
+            ultra.AddPart(partEngineOil);
+            ultra.AddPart(guma);
+
+            Console.WriteLine(ultra);
+        }
+    }
+    public class Car
+    {
+        private string Brand;
+        private string Model;
+        private int ProductionYear;
+
+        public Car(string brand,string model,int productionYear)
+        {
+            Brand = brand;
+            Model = model;
+            ProductionYear = productionYear;
+        }
+        public override string ToString()
+        {
+            return "Tipi "+ this.Brand + "Model " + this.Model + "Viti " + this.ProductionYear;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Car car = obj as Car;
+
+            if (car == null)
+            {
+                return false;
+            }
+
+            bool equals = object.Equals(this.Brand, car.Brand) &&
+                          object.Equals(this.Model, car.Model) &&
+                          object.Equals(this.ProductionYear, car.ProductionYear);
+            return equals;
+        }
+        public override int GetHashCode()
+        {
+            const int prime = 31;
+            int result = 1;
+            result = prime * result +((this.Brand == null) ? 0 : this.Brand.GetHashCode());
+            result = prime * result + ((this.Model == null) ? 0 : this.Model.GetHashCode());
+            result = prime * result + this.ProductionYear;
+            return result;
+        }
+}
+
+    public class Manufacturer
+    {
+        private string Name;
+        private string Country;
+        private string Address;
+        private string PhoneNumber;
+        private string Fax;
+
+        public Manufacturer(string name,string country,string address,string phoneNumber,string fax)
+        {
+            Name = name;
+            Country = country;
+            Address = address;
+            PhoneNumber = phoneNumber;
+            Fax = fax;
+        }
+        public override string ToString()
+        {
+            return "Emri: " + this.Name + ", Shteti: " + this.Country + ", Adresa: " + this.Address + ", Numri i telefonit: " + this.PhoneNumber + ",Faxi: " + this.Fax;
+        }
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PartsCarStore
+{
+    internal class Part
+    {
+        private string Name;
+        private string Code;
+        private PartCategory Category;
+        private Manufacturer Manufacturer;
+        private decimal BuyPrice;
+        private decimal SellPrice;
+        private HashSet<Car> SupportedCars;
+
+        public Part(string name,string code,PartCategory category,Manufacturer manufacturer,
+            decimal buyPrice,decimal sellPrice
+            )
+        {
+            this.Name = name;
+            this.Code = code;
+            this.Category = category;
+            this.Manufacturer = manufacturer;
+            this.BuyPrice = buyPrice;
+            this.SellPrice = sellPrice;
+            this.SupportedCars = new HashSet<Car>();
+        }
+        public void AddSupportedCar(Car car)
+        {
+            this.SupportedCars.Add(car);
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Part: " + this.Name + "\n");
+            sb.Append("Code: " + this.Code + "\n");
+            sb.Append("Category: " + this.Category + "\n");
+            sb.Append("Manufacturer: " + this.Manufacturer + "\n");
+            sb.Append("Buy Price: " + this.BuyPrice + "\n");
+            sb.Append("Sell Price: " + this.SellPrice + "\n");
+            sb.Append("Supported Cars: \n");
+            foreach (Car car in this.SupportedCars)
+            {
+                sb.Append(car + "\n");
+            }
+            sb.Append("--------------------\n");
+            return sb.ToString();
+        }
+    }
+}
+namespace PartsCarStore
+{
+    public enum PartCategory
+    {
+        Engine,
+        Tires,
+        Exhaust,
+        Suspension,
+        Brakes
+    }
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PartsCarStore
+{
+    internal class Shop
+    {
+        private string Name;
+        private List<Part> Parts;
+        public Shop(string Name)
+        {
+            this.Name = Name;
+            this.Parts = new List<Part>();
+        }
+        public void AddPart(Part part)
+        {
+            this.Parts.Add(part);
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Shop: " + this.Name + "\n\n");
+
+            foreach (Part part in this.Parts)
+            {
+                sb.Append(part + "\n");
+            }
+            return sb.ToString();
+        }
+    }
+}
+
+
+

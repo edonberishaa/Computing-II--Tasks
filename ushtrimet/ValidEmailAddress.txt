@@ -1,0 +1,96 @@
+ string inputFile = "C:\\Users\\Lenovo\\Desktop\\.NET\\ExamTopics1\\mails.txt";
+//    string outputFile = "valid-mails.txt";
+
+//    string[] lines = File.ReadAllLines(inputFile);
+
+//    using(StreamWriter sw = new StreamWriter(outputFile))
+//    {
+//        foreach(string line in lines)
+//        {
+//            string[] parts = line.Split(' ');
+//            if(parts.Length >= 3)
+//            {
+//                string email = parts[2];
+//                if (ValidEmailAddress(email))
+//                {
+//                    sw.WriteLine(line);
+//                }
+//            }
+//        }
+//    }
+//    Console.WriteLine("Valid email addresses have been written to valid-mails.txt");
+//}
+//static bool ValidEmailAddress(string email)
+//{
+//    int atIndex = email.IndexOf('@');
+//    if (atIndex == -1 || atIndex != email.LastIndexOf('@'))
+//    {
+//        return false;
+//    }
+//    string username = email.Substring(0,atIndex);
+//    string hostDomain = email.Substring(atIndex+1);
+
+//    int dotIndex = hostDomain.IndexOf('.');
+//    if (dotIndex == -1 || dotIndex != hostDomain.LastIndexOf('.'))
+//    {
+//        return false;
+//    }
+
+//    string host = hostDomain.Substring(0,dotIndex);
+//    string domain = hostDomain.Substring(dotIndex+1);
+
+//    if (!IsValidUsername(username))
+//    {
+//        return false;
+//    }
+
+//    if (!isValidHost(host))
+//    {
+//        return false;
+//    }
+
+//    if (!IsValidDoman(domain))
+//    {
+//        return false;
+//    }
+
+//    if (!IsValidDoman(domain))
+//    {
+//        return false;
+//    }
+//    return true;
+//}
+//static bool IsValidUsername(string username)
+//{
+//    foreach(char c in username)
+//    {
+//        if(!char.IsLetter(c) && c != '_') return false;
+//    }
+//    return true;
+//}
+//static bool isValidHost(string host)
+//{
+//    foreach(char c in host)
+//    {
+//        if (!char.IsLower(c))
+//        {
+//            return false;
+//        }
+//    }
+//    return true;
+//}
+//static bool IsValidDoman(string domain)
+//{
+//    if(domain.Length < 2 || domain.Length >4)
+//    {
+//        return false;
+//    }
+//    foreach(char c in domain)
+//    {
+//        if (!char.IsLower(c))
+//        {
+//            return false;
+//        }
+//    }
+//    return true;
+//}

@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ExamTopics1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter N: ");
+            int N = int.Parse(Console.ReadLine());
+
+            int[,] matrix = new int[N, N];
+            int num = 1;
+
+            int row = 0, col = N - 1;
+            int direction = 0;
+            //Directions ; 0 = down,1 = left,2 = up,3 = right
+
+            while (num <= N * N)
+            {
+                matrix[row, col] = num++;
+
+                if (direction == 0) row++;
+                else if (direction == 1) col--;
+                else if (direction == 2) row--;
+                else col++;
+
+                if (col < 0 || row >= N || col >= N || row < 0 || matrix[row,col] != 0)
+                {
+                    if (direction == 0) row--;
+                    else if (direction == 1) col++;
+                    else if (direction == 2) row++;
+                    else col--;
+
+                    direction = (direction + 1) % 4;
+
+                    if (direction == 0) row++;
+                    else if (direction == 1) col--;
+                    else if (direction == 2) row--;
+                    else col++;
+                }
+            }
+            for(int i = 0; i < N; i++)
+            {
+                for(int j = 0; j<N; j++)
+                {
+                    Console.Write(matrix[i, j].ToString().PadLeft(4));
+                }
+                Console.WriteLine();
+            }
+        }
+
+    }
+}

@@ -1,0 +1,204 @@
+using System;
+using System.Collections.Generic;
+
+namespace RealEstateCompany
+{
+    // Base class for all types of estates
+    public class Estate
+    {
+        public double Area { get; set; }
+        public double PricePerSquareMeter { get; set; }
+        public string Location { get; set; }
+
+        public Estate(double area, double pricePerSquareMeter, string location)
+        {
+            Area = area;
+            PricePerSquareMeter = pricePerSquareMeter;
+            Location = location;
+        }
+
+        public virtual double CalculatePrice()
+        {
+            return Area * PricePerSquareMeter;
+        }
+
+        public override string ToString()
+        {
+            return $"Area: {Area} m², Price: {CalculatePrice()} USD, Location: {Location}";
+        }
+    }
+
+    // Apartment class (inherits from Estate)
+    public class Apartment : Estate
+    {
+        public int FloorNumber { get; set; }
+        public bool ElevatorAvailability { get; set; }
+        public bool IsFurnished { get; set; }
+
+        public Apartment(double area, double pricePerSquareMeter, string location, int floorNumber, bool elevatorAvailability, bool isFurnished)
+            : base(area, pricePerSquareMeter, location)
+        {
+            FloorNumber = floorNumber;
+            ElevatorAvailability = elevatorAvailability;
+            IsFurnished = isFurnished;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $", Floor: {FloorNumber}, Elevator: {(ElevatorAvailability ? "Yes" : "No")}, Furnished: {(IsFurnished ? "Yes" : "No")}";
+        }
+    }
+
+    // House class (inherits from Estate)
+    public class House : Estate
+    {
+        public double UndevelopedArea { get; set; }
+        public double DevelopedArea { get; set; }
+        public int NumberOfFloors { get; set; }
+        public bool IsFurnished { get; set; }
+
+        public House(double area, double pricePerSquareMeter, string location, double undevelopedArea, double developedArea, int numberOfFloors, bool isFurnished)
+            : base(area, pricePerSquareMeter, location)
+        {
+            UndevelopedArea = undevelopedArea;
+            DevelopedArea = developedArea;
+            NumberOfFloors = numberOfFloors;
+            IsFurnished = isFurnished;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $", Undeveloped Area: {UndevelopedArea} m², Developed Area: {DevelopedArea} m², Floors: {NumberOfFloors}, Furnished: {(IsFurnished ? "Yes" : "No")}";
+        }
+    }
+
+    // UndevelopedArea class (inherits from Estate)
+    public class UndevelopedArea : Estate
+    {
+        public bool Fenced { get; set; }
+
+        public UndevelopedArea(double area, double pricePerSquareMeter, string location, bool fenced)
+            : base(area, pricePerSquareMeter, location)
+        {
+            Fenced = fenced;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $", Fenced: {(Fenced ? "Yes" : "No")}";
+        }
+    }
+
+    // Shop class (inherits from Estate)
+    public class Shop : Estate
+    {
+        public double ShopSize { get; set; }
+        public string BusinessType { get; set; }
+
+        public Shop(double area, double pricePerSquareMeter, string location, double shopSize, string businessType)
+            : base(area, pricePerSquareMeter, location)
+        {
+            ShopSize = shopSize;
+            BusinessType = businessType;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $", Shop Size: {ShopSize} m², Business Type: {BusinessType}";
+        }
+    }
+
+    // Employee class
+    public class Employee
+    {
+        public string Name { get; set; }
+        public string WorkPosition { get; set; }
+        public int Experience { get; set; } // in years
+
+        public Employee(string name, string workPosition, int experience)
+        {
+            Name = name;
+            WorkPosition = workPosition;
+            Experience = experience;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} - {WorkPosition}, Experience: {Experience} years";
+        }
+    }
+
+    // Company class
+    public class Company
+    {
+        public string Name { get; set; }
+        public string Owner { get; set; }
+        public string TaxID { get; set; }
+        public List<Employee> Employees { get; set; }
+        public List<Estate> Estates { get; set; }
+
+        public Company(string name, string owner, string taxID)
+        {
+            Name = name;
+            Owner = owner;
+            TaxID = taxID;
+            Employees = new List<Employee>();
+            Estates = new List<Estate>();
+        }
+
+        public void AddEmployee(Employee employee)
+        {
+            Employees.Add(employee);
+        }
+
+        public void AddEstate(Estate estate)
+        {
+            Estates.Add(estate);
+        }
+
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"Company: {Name}, Owner: {Owner}, Tax ID: {TaxID}");
+            Console.WriteLine("\nEmployees:");
+            foreach (var employee in Employees)
+            {
+                Console.WriteLine(employee);
+            }
+
+            Console.WriteLine("\nEstates for Sale:");
+            foreach (var estate in Estates)
+            {
+                Console.WriteLine(estate);
+            }
+        }
+    }
+
+    // Test Class
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create employees
+            Employee emp1 = new Employee("John Smith", "Sales Manager", 5);
+            Employee emp2 = new Employee("Alice Brown", "Agent", 3);
+
+            // Create estates
+            Estate apartment = new Apartment(85, 1000, "New York", 3, true, true);
+            Estate house = new House(150, 900, "Los Angeles", 500, 200, 2, false);
+            Estate undevelopedArea = new UndevelopedArea(1000, 300, "California", true);
+            Estate shop = new Shop(50, 1500, "Chicago", 50, "Retail");
+
+            // Create company
+            Company company = new Company("Real Estate Co", "Robert Johnson", "1234567890");
+            company.AddEmployee(emp1);
+            company.AddEmployee(emp2);
+            company.AddEstate(apartment);
+            company.AddEstate(house);
+            company.AddEstate(undevelopedArea);
+            company.AddEstate(shop);
+
+            // Display company info
+            company.DisplayInfo();
+        }
+    }
+}
